@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>规格码生成器</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>马达规格码生成器</h1>
+
+    <!-- 新增型号选择 -->
+    <label for="model">选择电机型号：</label>
+    <select id="model">
+        <option value="A35">A35</option>
+        <option value="A58">A58</option>
+        <option value="A67">A67</option>
+        <option value="A95">A95</option>
+        <option value="A96">A96</option>
+    </select>
+
+    <label for="type">推杆类型：</label>
+    <select id="type">
+        <option value="1">普通</option>
+        <option value="2">防夹手</option>
+        <option value="9">普通拉上升</option>
+    </select>
+
+    <label for="voltage">电压：</label>
+    <select id="voltage">
+        <option value="1">18V</option>
+        <option value="2">12V</option>
+        <option value="4">24V</option>
+    </select>
+
+    <label for="speed">负载速度：</label>
+    <input type="text" id="speed" placeholder="请输入负载速度">
+    
+    <!-- 图片显示区域 -->
+    <img id="speed-image" src="speed-image.jpg" alt="负载速度示意图">
+
+    <label for="stroke">行程尺寸：</label>
+    <input type="text" id="stroke" placeholder="请输入行程尺寸 (XXX)">
+
+    <label for="installation">安装尺寸：</label>
+    <input type="text" id="installation" placeholder="请输入安装尺寸 (XXXX)">
+
+    <label for="front-end">前端型式：</label>  
+    <select id="front-end">
+        <option value="A2">A58-22A,普通,外径25,长度45,孔径φ10.2</option>
+        <option value="C4">A58-22B,槽宽8,孔径10.2mm</option>
+        <option value="A8">A58-22E,,槽宽6,总长42.5mm,孔径10.2</option>
+        <option value="B2">A58-22N,HJA58铁前端丝堵,普通,外径22,长度45,孔径10.1</option>
+        <option value="A4">A58-22Q,A58铁丝堵,减短,外径25,总长35,孔径10.2</option>
+        <option value="Z1">A58-22X,铁前端丝堵,普通,外径28,长度45,孔径10.2</option>
+        <option value="A5">A58-22A,普通,外径25,长度45,孔径φ10.2</option>
+        <option value="C3">A58-22B,槽宽8,孔径10.2mm</option>
+        <option value="Z1">A66-2H-加工-圆管-槽宽6.2-孔径12</option>
+    </select>
+
+    <label for="backend">后端型式：</label>
+    <select id="backend">
+        <option value="E">外壳一体0°,槽宽5.5,孔径10.3</option>
+        <option value="Z">外壳一体0°,槽宽5.5,孔径Ø9.6</option>
+    </select>
+
+    <label for="colour">颜色：</label>
+    <select id="colour">
+        <option value="B">黑色</option>
+        <option value="W">灰白色RAL7035</option>
+    </select>
+    
+    <label for="signal">信号输出：</label>
+    <select id="signal">
+        <option value="0">无</option>
+        <option value="1">单霍尔</option>
+        <option value="2">双霍尔</option>
+    </select>
+
+    <label for="line-sequence">线序：</label>
+    <select id="line-sequence">
+        <option value="A">普通A线序</option>
+        <option value="H">紧急刹车B线序</option>
+        <option value="F">翻身A线序</option>
+        <option value="G">翻身B线序</option>
+        <option value="B">霍尔急停A线序</option>
+        <option value="Z">客制化</option>
+    </select>
+
+    <label for="Plug-type">插头类型：</label>
+    <select id="Plug-type">
+        <option value="A">裸线沾锡</option>
+        <option value="B">B01</option>
+        <option value="C">B02</option>
+    </select>
+
+    <label for="Line-length">线长：</label>
+    <input type="text" id="Line-length" placeholder="请输入线长 (XXXX)">
+
+    <label for="Flow-code">流水码：</label>
+    <input type="text" id="Flow-code" placeholder="请输入流水码 (XX)">
+
+    <button onclick="generateCode()">生成规格码</button>
+
+    <div id="result"></div>
+
+    <div id="userSelections" style="margin-top: 20px; font-size: 16px; color: blue;"></div>
+    
+
+    <script src="script.js"></script>
+
+    <script>
+        // 监听型号选择变化
+        document.getElementById("model").addEventListener("change", function() {
+            updateFieldsBasedOnModel(this.value);
+        });
+
+        // 根据型号动态调整表单元素
+        function updateFieldsBasedOnModel(model) {
+            const voltageSelect = document.getElementById("voltage");
+            const speedInput = document.getElementById("speed");
+            const strokeInput = document.getElementById("stroke");
+
+            if (model === "A35") {
+                // 例如：A35型号的电压只能选择18V和24V
+                voltageSelect.innerHTML = `<option value="1">18V</option><option value="4">24V</option>`;
+                // A35型号的负载速度范围是100-300
+                speedInput.setAttribute("placeholder", "请输入负载速度 (100-300)");
+                // A35型号的行程尺寸范围是10-100
+                strokeInput.setAttribute("placeholder", "请输入行程尺寸 (10-100)");
+            } else if (model === "A58") {
+                // 例如：A36型号的电压只能选择12V和24V
+                voltageSelect.innerHTML = `<option value="2">12V</option><option value="4">24V</option>`;
+                // A36型号的负载速度范围是200-400
+                speedInput.setAttribute("placeholder", "请输入负载速度 (200-400)");
+                // A36型号的行程尺寸范围是20-200
+                strokeInput.setAttribute("placeholder", "请输入行程尺寸 (20-200)");
+            } else if (model === "A") {
+                // A37型号的电压范围
+                voltageSelect.innerHTML = `<option value="1">18V</option><option value="2">12V</option>`;
+                speedInput.setAttribute("placeholder", "请输入负载速度 (150-350)");
+                strokeInput.setAttribute("placeholder", "请输入行程尺寸 (30-150)");
+            }
+        }
+    </script>
+    <script>
+        // 监听负载速度输入框的焦点事件
+        document.getElementById("speed").addEventListener("focus", function() {
+            showSpeedImage(true);
+        });
+
+        // 监听负载速度输入框的失焦事件
+        document.getElementById("speed").addEventListener("blur", function() {
+            showSpeedImage(false);
+        });
+
+        // 控制图片的显示与隐藏
+        function showSpeedImage(show) {
+            const image = document.getElementById("speed-image");
+            if (show) {
+                image.style.display = "block";  // 显示图片
+            } else {
+                image.style.display = "none";   // 隐藏图片
+            }
+        }
+    </script>
+</body>
+</html>
