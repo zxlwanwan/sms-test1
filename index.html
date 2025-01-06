@@ -1,12 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>欢迎界面</title>
+    <style>
+        /* 简单样式 */
+        #welcome-page, #main-page {
+            display: none;
+            //text-align: center;
+            margin-top: 100px;
+        }
+        #welcome-page {
+            display: block; /* 默认显示欢迎页面 */
+        }
+        button {
+            margin: 10px;
+            padding: 10px 20px;
+            font-size: 18px;
+        }
+    </style>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>规格码生成器</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- 欢迎界面 -->
+    <div id="welcome-page">
+        <h1>欢迎使用马达规格码生成器</h1>
+        <p>请选择操作：</p>
+        <button onclick="navigateToPage(1)">进入规格码生成器</button>
+        <button onclick="navigateToPage(2)">其他功能 (示例)</button>
+    </div>
+
+    <!-- 目标页面 -->
+    <div id="main-page">
+
     <h1>马达规格码生成器</h1>
 
     <!-- 新增型号选择 -->
@@ -105,7 +134,7 @@
     <div id="result"></div>
 
     <div id="userSelections" style="margin-top: 20px; font-size: 16px; color: blue;"></div>
-    
+    </div>
 
     <script src="script.js"></script>
 
@@ -161,6 +190,16 @@
                 image.style.display = "block";  // 显示图片
             } else {
                 image.style.display = "none";   // 隐藏图片
+            }
+        }
+
+         // 页面导航逻辑
+         function navigateToPage(buttonId) {
+            if (buttonId === 1) {
+                document.getElementById('welcome-page').style.display = 'none';
+                document.getElementById('main-page').style.display = 'block';
+            } else {
+                alert('其他功能尚未实现！');
             }
         }
     </script>
